@@ -61,3 +61,24 @@ export function getConsultPage(params) {
 export function getSessionDetail(sessionId) {
   return service.get(`/psychological-chat/sessions/${sessionId}/messages`);
 }
+
+//分页查询情绪日记
+///emotion-diary/admin/page
+export function getEmotionDiaryPage(params) {
+  return service.get("/emotion-diary/admin/page", { params });
+}
+//删除情绪日记
+///emotion-diary/admin/{id}
+export function deleteEmotionDiary(id) {
+  return service.delete(`/emotion-diary/admin/${id}`);
+}
+//获取综合数据分析
+///data-analytics/overview
+export function getOverview() {
+  return service.get("/data-analytics/overview");
+}
+
+///user/logout
+export function logout() {
+  return service.post("/user/logout");
+}

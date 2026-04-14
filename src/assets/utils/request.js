@@ -40,9 +40,11 @@ service.interceptors.response.use(
           localStorage.removeItem("token");
           // 清除用户信息
           localStorage.removeItem("userInfo");
-
-          // 跳转登录页
-          window.location.href = "/auth/login";
+          
+          // 对于非关键页面，不强制跳转，只给出提示
+          // 例如 dashboard 页面，让用户可以看到页面结构，只是数据无法加载
+          // 只有在用户主动操作需要登录的功能时才跳转
+          // window.location.href = "/auth/login";
         } else {
           ElMessage.error(data.msg || "登录过期，请重新登录");
           return Promise.reject("网络请求失败");
