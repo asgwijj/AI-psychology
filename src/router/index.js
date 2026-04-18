@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from "vue-router";
 import Layout from "../components/Layout.vue";
 import AuthLayout from "../components/AuthLayout.vue";
-
+import FrontendLayout from "../components/FrontendLayout.vue";
 const routesRouter = [
   {
     path: "/back",
@@ -65,9 +65,45 @@ const routesRouter = [
   },
 ];
 
+const frontendRoutes = [
+  {
+    path: "/",
+    redirect: "/home",
+    component: FrontendLayout,
+    children: [
+      {
+        path: "home",
+        component: () => import("../views/home.vue"),
+      },
+      {
+        path: "consultation",
+        component: () => import("../views/consultation.vue"),
+      },
+      {
+        path: "emotion-diary",
+        component: () => import("../views/emotionDiary.vue"),
+      },
+      {
+        path: "knowledge",
+        component: () => import("../views/frontendKnowledge.vue"),
+      },
+      {
+        path: "knowledge/article/:id",
+        component: () => import("../views/articleDetail.vue"),
+        props: true,
+      },
+    ],
+  },
+  // 重定向 /article 路径到 /knowledge
+  {
+    path: "/article",
+    redirect: "/knowledge",
+  },
+];
+
 const router = createRouter({
   history: createWebHistory(),
-  routes: routesRouter,
+  routes: [...routesRouter, ...frontendRoutes],
 });
 
 // 路由前置守卫
@@ -83,6 +119,12 @@ router.beforeEach((to, from, next) => {
         next("/back/dashboard");
       }
     } else if (userInfo.userType == 1) {
+      //用户端账号只能访问前台路由
+      if (to.path.startsWith("/back") || to.path.startsWith("/auth")) {
+        next("/");
+      } else {
+        next();
+      }
     }
   } else {
     if (to.path.startsWith("/back")) {

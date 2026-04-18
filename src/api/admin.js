@@ -82,3 +82,9 @@ export function getOverview() {
 export function logout() {
   return service.post("/user/logout");
 }
+
+///psychological-chat/session/${sessionId}/emotion
+//获取会话情绪分析结果
+export function getSessionEmotion(sessionId) {
+  return service.get(`/psychological-chat/session/${sessionId}/emotion`);
+}
